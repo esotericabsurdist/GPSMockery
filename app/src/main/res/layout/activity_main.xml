@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="@color/colorGreenGrey">
+
+    <LinearLayout
+        android:id="@+id/location_edit_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <EditText
+            android:id="@+id/longitude"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:hint="longitude"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:background="@color/colorYellowGrey"
+            android:textColor="@color/colorText"
+            android:inputType="numberSigned|numberDecimal"/>
+
+        <EditText
+            android:id="@+id/latitude"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:hint="latitude"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:background="@color/colorYellowGrey"
+            android:textColor="@color/colorText"
+            android:inputType="numberSigned|numberDecimal"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/spoof"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="spoof"
+        android:layout_weight="1"
+        android:background="@color/colorButton"
+        android:textColor="@color/colorText"
+        android:layout_below="@+id/location_edit_text_layout"/>
+
+    <org.osmdroid.views.MapView android:id="@+id/map"
+        android:layout_below="@+id/spoof"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
