@@ -17,7 +17,7 @@
         <EditText
             android:id="@+id/longitude"
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:hint="longitude"
             android:layout_weight="1"
             android:layout_gravity="bottom"
@@ -29,7 +29,7 @@
         <EditText
             android:id="@+id/latitude"
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:hint="latitude"
             android:layout_weight="1"
             android:layout_gravity="bottom"
@@ -42,7 +42,7 @@
     <Button
         android:id="@+id/spoof"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:text="spoof"
         android:layout_weight="1"
         android:background="@color/colorButton"

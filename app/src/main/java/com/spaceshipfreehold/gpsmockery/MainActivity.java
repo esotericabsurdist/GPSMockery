@@ -16,7 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.osmdroid.events.MapEventsReceiver;
+import org.osmdroid.events.MapListener;
+import org.osmdroid.events.ScrollEvent;
+import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
 
 import java.util.ArrayList;
 
@@ -26,6 +32,20 @@ public class MainActivity extends AppCompatActivity {
     EditText mLongitudeEditText;
     Button mSpoofButton;
     org.osmdroid.views.MapView mMap;
+    org.osmdroid.api.IMapController mMapController;
+
+    org.osmdroid.events.MapEventsReceiver mMapEventsReceiver = new MapEventsReceiver() {
+        @Override
+        public boolean singleTapConfirmedHelper(GeoPoint p) {
+            return false;
+        }
+
+        @Override
+        public boolean longPressHelper(GeoPoint p) {
+            // TODO
+            return false;
+        }
+    };
 
     View.OnClickListener mSpoofButtonOnClickListener = new View.OnClickListener() {
         @Override
@@ -38,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // According to OSM,
+        // According to OSM, do this initialize a location for caching tiles.
         Context context = getApplicationContext();
         org.osmdroid.config.Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
 
@@ -54,6 +74,13 @@ public class MainActivity extends AppCompatActivity {
         mMap = findViewById(R.id.map);
         mMap.setTileSource(TileSourceFactory.MAPNIK);
         mMap.setMultiTouchControls(true);
+
+        mMapController = mMap.getController();
+        mMap.setVerticalMapRepetitionEnabled(false);
+        mMap.setHorizontalMapRepetitionEnabled(false);
+        mMapController.setZoom(2f);
+        GeoPoint startPoint = new GeoPoint(0f, 0f);
+        mMapController.setCenter(startPoint);
     }
 
     @Override
@@ -106,10 +133,13 @@ public class MainActivity extends AppCompatActivity {
 
             lm.setTestProviderEnabled(mocLocationProvider, true);
 
+            double latitude = Double.valueOf(mLatitudeEditText.getText().toString());
+            double longitude = Double.valueOf(mLongitudeEditText.getText().toString());
+
             Location loc = new Location(mocLocationProvider);
             Location mockLocation = new Location(mocLocationProvider); // a string
-            mockLocation.setLatitude(Double.valueOf(mLatitudeEditText.getText().toString()));
-            mockLocation.setLongitude(Double.valueOf(mLongitudeEditText.getText().toString()));
+            mockLocation.setLatitude(latitude);
+            mockLocation.setLongitude(longitude);
             mockLocation.setAltitude(loc.getAltitude());
             mockLocation.setTime(System.currentTimeMillis());
             mockLocation.setAccuracy(1);
@@ -120,10 +150,18 @@ public class MainActivity extends AppCompatActivity {
             lm.setTestProviderLocation(mocLocationProvider, mockLocation);
             Toast.makeText(getApplicationContext(), "Location set", Toast.LENGTH_SHORT).show();
 
+
+            // move map to location
+            centerOn(latitude, longitude);
         }
         catch(Exception e){
             Toast.makeText(this,"Something Went Wrong", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void centerOn(double latitude, double longitude){
+        GeoPoint point = new GeoPoint(latitude, longitude);
+        mMapController.animateTo(point,9.5, Long.valueOf(3));
     }
 
 }
