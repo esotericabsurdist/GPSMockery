@@ -3,15 +3,14 @@ package com.spaceshipfreehold.gpsmockery;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // According to OSM,
+        Context context = getApplicationContext();
+        org.osmdroid.config.Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
+
         setContentView(R.layout.activity_main);
 
         checkPermissions();
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         mLongitudeEditText = findViewById(R.id.longitude);
         mSpoofButton = findViewById(R.id.spoof);
         mSpoofButton.setOnClickListener(mSpoofButtonOnClickListener);
+
         mMap = findViewById(R.id.map);
         mMap.setTileSource(TileSourceFactory.MAPNIK);
         mMap.setMultiTouchControls(true);

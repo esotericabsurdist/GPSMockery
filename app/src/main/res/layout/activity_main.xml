@@ -52,6 +52,7 @@
     <org.osmdroid.views.MapView android:id="@+id/map"
         android:layout_below="@+id/spoof"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tilesource="Mapnik"/>
 
 </RelativeLayout>
